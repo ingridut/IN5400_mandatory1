@@ -108,9 +108,8 @@ def conv_layer_backward(output_layer_gradient, input_layer, weight, bias, pad_si
                     for s in range(width_w):
                         weight_gradient[n, c, r, s] += np.sum(np.multiply(output_layer_gradient[b, n, :, :], input_padded[b, c, r:width_x+r, s:width_x+s]))
                         
-            for k in range(channels_w):
                 # input layer gradient equal to convolution of output_layer_gradient convolution with weights turned 180 degrees
-                input_layer_gradient[b, k, :, :] += conv_layer_forward(output_layer_gradient[b, n, :, :].reshape(1, 1, height_y, width_y), np.rot90(weight[n, k, :, :], 2, (0, 1)).reshape(1, 1, height_w, width_w), bias=np.zeros(1)).reshape(height_x, width_x)
+                input_layer_gradient[b, c, :, :] += conv_layer_forward(output_layer_gradient[b, n, :, :].reshape(1, 1, height_y, width_y), np.rot90(weight[n, c, :, :], 2, (0, 1)).reshape(1, 1, height_w, width_w), bias=np.zeros(1)).reshape(height_x, width_x)
             bias_gradient[n] += np.sum(output_layer_gradient[b, n, :, :])
             
          
